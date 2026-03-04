@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>testvpn</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background-image:url("https://outbyte.com/blog/wp-content/uploads/How-to-Set-Up-a-VPN-at-Home-1.png");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+
+.page{display:none;text-align:center;}
+.active{display:block;}
+
+.box{
+  background:rgba(255,255,255,0.95);
+  padding:40px;
+  border-radius:10px;
+  width:320px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:15px 0;
+  border:1px solid #ccc;
+  border-radius:5px;
+  text-align:center;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:5px;
+  font-weight:bold;
+  cursor:pointer;
+  background:black;
+  color:white;
+}
+
+/* LOADER */
+.loader{
+  border:6px solid #eee;
+  border-top:6px solid black;
+  border-radius:50%;
+  width:60px;
+  height:60px;
+  animation:spin 1s linear infinite;
+  margin:20px auto;
+}
+
+@keyframes spin{
+  0%{transform:rotate(0deg);}
+  100%{transform:rotate(360deg);}
+}
+
+/* WIFI */
+.wifi{
+  margin:30px auto;
+  width:140px;
+  height:120px;
+  position:relative;
+}
+
+.bar{
+  position:absolute;
+  bottom:0;
+  width:20px;
+  background:black;
+  animation:wave 1.2s infinite ease-in-out;
+}
+
+.bar:nth-child(1){ left:0; height:20px; animation-delay:0s;}
+.bar:nth-child(2){ left:30px; height:40px; animation-delay:0.2s;}
+.bar:nth-child(3){ left:60px; height:60px; animation-delay:0.4s;}
+.bar:nth-child(4){ left:90px; height:80px; animation-delay:0.6s;}
+.bar:nth-child(5){ left:120px; height:100px; animation-delay:0.8s;}
+
+@keyframes wave{
+  0%,100%{opacity:0.3;}
+  50%{opacity:1;}
+}
+
+.countdown{
+  font-size:22px;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+/* Zone finale cachée */
+.final-section{
+  display:none;
+  margin-top:20px;
+}
+
+.whatsapp-btn{
+  display:inline-block;
+  margin-top:15px;
+  background:#25D366;
+  color:white;
+  text-decoration:none;
+  padding:12px;
+  border-radius:5px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+  <div class="box">
+    <h2>Activation sécurisée</h2>
+    <input type="text" placeholder="Entrez votre numero">
+    <button onclick="startActivation()">Valider</button>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+  <div class="box">
+    <div class="loader"></div>
+    <h3>Activation en cours...</h3>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+  <div class="box">
+    <div class="wifi">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+
+    <p>Période d'essai prend fin dans :</p>
+    <div class="countdown" id="timer">01:00</div>
+
+    <!-- SECTION QUI APPARAIT EN MEME TEMPS -->
+    <div class="final-section" id="finalSection">
+      <p style="font-weight:bold;">
+        Votre période d'essai est terminée.
+      </p>
+
+      <!-- 🔥 REMPLACE PAR TON NUMERO -->
+      <a href="https://wa.me/22667221552"
+         target="_blank"
+         class="whatsapp-btn">
+         Contacter via WhatsApp
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+function startActivation(){
+  document.getElementById("page1").classList.remove("active");
+  document.getElementById("page2").classList.add("active");
+
+  setTimeout(()=>{
+    document.getElementById("page2").classList.remove("active");
+    document.getElementById("page3").classList.add("active");
+    startCountdown();
+  },2000);
+}
+
+function startCountdown(){
+  let time = 60;
+  let timer = document.getElementById("timer");
+  let finalSection = document.getElementById("finalSection");
+
+  let interval = setInterval(()=>{
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+
+    if(seconds < 10) seconds = "0" + seconds;
+    timer.innerText = "0" + minutes + ":" + seconds;
+
+    time--;
+
+    if(time < 0){
+      clearInterval(interval);
+      timer.innerText = "00:00";
+      finalSection.style.display="block"; // MESSAGE + BOUTON EN MEME TEMPS
+    }
+
+  },1000);
+}
+
+</script>
+
+</body>
+</html>
